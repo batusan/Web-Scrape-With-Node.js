@@ -1,0 +1,172 @@
+.url-input {
+    --background: #fff;
+    --border-default: #e1e6f9;
+    --border-active: #275efe;
+    --text-color: #646b8c;
+    --placeholder-color: #bbc1e1;
+    --icon: #275efe;
+    --close: #646b8c;
+    --close-light: #a6accd;
+    --close-background: #eff2fb;
+    width: 100%;
+    max-width: 240px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 8px;
+    background: var(--background);
+    box-shadow: inset 0 0 0 var(--border-width, 1px) var(--border, var(--border-default));
+    transition: box-shadow 0.2s;
+    --favicon-scale: 0;
+    --icon-offset: 0px;
+    --clear-x: 0px;
+    --clear-swipe-left: 0px;
+    --clear-swipe-x: 0;
+    --clear-swipe: 0px;
+    --clear-scale: 0;
+    --clear-rotate: 0deg;
+    --clear-opacity: 0;
+    --clear-arrow-o: 1;
+    --clear-arrow-x: 0px;
+    --clear-arrow-y: 0px;
+    --clear-arrow-offset: 4px;
+    --clear-arrow-offset-second: 4px;
+    --clear-line-array: 8.5px;
+    --clear-line-offset: 27px;
+    --clear-long-array: 8.5px;
+    --clear-long-offset: 24px;
+}
+.url-input.clearing, .url-input:focus-within {
+    --border-width: 1.5px;
+    --border: var(--border-active);
+}
+.url-input.clearing {
+    --close-background: transparent;
+    --clear-arrow-stroke: var(--close-light);
+}
+.url-input .icon {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    pointer-events: none;
+}
+.url-input .icon svg, .url-input .icon img {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+.url-input .icon svg {
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: var(--icon);
+}
+.url-input .icon svg path {
+    stroke-dasharray: 24px;
+    stroke-dashoffset: var(--icon-offset);
+}
+.url-input .icon .favicon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: scale(var(--favicon-scale)) translateZ(0);
+}
+.url-input .text {
+    flex-grow: 1;
+}
+.url-input .text input {
+    -webkit-appearance: none;
+    line-height: 24px;
+    background: none;
+    border: none;
+    outline: none;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 12px 12px 12px 44px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+.url-input .text input::placeholder {
+    color: var(--placeholder-color);
+}
+.url-input .clear {
+    -webkit-appearance: none;
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    margin: 12px 12px 12px 0;
+    border: none;
+    outline: none;
+    background: var(--b, transparent);
+    transition: background 0.2s;
+    border-radius: 6px;
+    opacity: var(--clear-opacity);
+    transform: scale(var(--clear-scale)) translateZ(0);
+}
+.url-input .clear:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 12px;
+    left: var(--clear-swipe-left);
+    background: var(--background);
+    transform-origin: 100% 50%;
+    transform: translateX(var(--clear-swipe)) scaleX(var(--clear-swipe-x)) translateZ(0);
+}
+.url-input .clear svg {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 24px;
+    height: 24px;
+    outline: none;
+    cursor: pointer;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: var(--close);
+    transform: translateX(var(--clear-x)) rotate(var(--clear-rotate)) translateZ(0);
+}
+.url-input .clear svg path {
+    transition: stroke 0.2s;
+}
+.url-input .clear svg path.arrow {
+    stroke: var(--clear-arrow-stroke, var(--close));
+    stroke-dasharray: 4px;
+    stroke-dashoffset: var(--clear-arrow-offset);
+    opacity: var(--clear-arrow-o);
+    transform: translate(var(--clear-arrow-x), var(--clear-arrow-y)) translateZ(0);
+}
+.url-input .clear svg path.arrow:last-child {
+    stroke-dashoffset: var(--clear-arrow-offset-second);
+}
+.url-input .clear svg path.line {
+    stroke-dasharray: var(--clear-line-array) 28.5px;
+    stroke-dashoffset: var(--clear-line-offset);
+}
+.url-input .clear svg path.long {
+    stroke: var(--clear-arrow-stroke, var(--close));
+    stroke-dasharray: var(--clear-long-array) 15.5px;
+    stroke-dashoffset: var(--clear-long-offset);
+    opacity: var(--clear-arrow-o);
+    transform: translate(var(--clear-arrow-x), var(--clear-arrow-y)) translateZ(0);
+}
+.url-input .clear:hover {
+    --b: var(--close-background);
+}
+html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+* {
+    box-sizing: inherit;
+}
+*:before, *:after {
+    box-sizing: inherit;
+}
