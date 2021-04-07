@@ -20,7 +20,7 @@ let connection = mysql.createConnection({
 
 
 
-function handleDisconnect() {                                                  // the old one cannot be reused.
+function handleDisconnect() {
 
     connection.connect(function (err) {              // The server is either down
         if (err) {                                     // or restarting (takes a while sometimes).
