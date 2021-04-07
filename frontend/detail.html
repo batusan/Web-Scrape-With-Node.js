@@ -7,10 +7,6 @@
     <meta name="description" content="">
     <title>Web Scrape</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
-
-
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
@@ -77,9 +73,6 @@
                             </a>
                         </li>
                     </ul>
-
-
-
                 </div>
             </nav>
 
@@ -89,7 +82,7 @@
                     <h1 class="h2">Detail Product</h1>
                 </div>
 
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-primary">
                     <h4 class="alert-heading">How to search product ?</h4>
                     <p>You can search your products with product id.</p>
                     <hr>
@@ -121,12 +114,9 @@
                         </svg>
                     </button>
                     <button type="button" id="inputbtn" class="btn btn-primary btn-lg btn-block"
-                        onclick="sendJson()">Add</button>
+                        onclick="findProductWithId()">Add</button>
                 </div>
-
                 <div id="product-detail"></div>
-
-
             </main>
         </div>
     </div>
@@ -136,45 +126,44 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.5/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
-        function sendJson() {
+        function findProductWithId() {
             Spinner(true);
             var id = document.querySelector('#urlInput');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://127.0.0.1:3000/api/products/'+id.value, true);
+            xhr.open('GET', 'http://127.0.0.1:3000/api/products/' + id.value, true);
             xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onerror = function () {
+                warningNotify('Error: Cant connect to server!');
+                Spinner(false);
+            }
             xhr.onload = function () {
                 Spinner(false);
                 var jsonResponse = JSON.parse(this.responseText);
                 if (this.status == 200) {
-                    successNotify(jsonResponse.message + "\n");
+                    successNotify(jsonResponse.message);
                     responseToCard(jsonResponse.productData);
                 } else {
                     warningNotify(jsonResponse.message);
                 }
             };
             xhr.send();
+
         }
 
         function responseToCard(data) {
-            document.getElementById('product-detail').innerHTML = '<div class="card mb-3">' +
-                '<img src = "' + data.product_image + '" class="card-img-top"  width="%20" height="%20">' +
-                '<div class="card-body">' +
-                '<h5 class="card-title">' + data.product_name + '</h5>' +
-                '<p class="card-text">' + data.product_price + '</p>' +
-                ' </div > ' +
-                '</div > ';
+            document.getElementById('product-detail').innerHTML = '<div class="card mb-3" style="max-width: 540px;">' +
+                '<div class="row no-gutters">' +
+                '<div class="col-md-4">' +
+                '<img src="' + data.product_image + '" class="card-img" ></div>' +
+                '<div class="col-md-8"><div class="card-body">' +
+                '<h5 class="card-title">' + data.product_name + '</h5><p class="card-text">' + data.product_price + '</p>' +
+                '</div></div ></div ></div> ';
         }
-
-
     </script>
 
     <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
         crossorigin="anonymous"></script>
     <script src="js/dashboard.js"></script>
 </body>

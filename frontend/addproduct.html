@@ -33,8 +33,7 @@
         }
     </style>
 
-    <!-- Custom styles for this template -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css" rel="stylesheet">
+    <!-- Custom styles  -->
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/input.css" rel="stylesheet">
 </head>
@@ -80,8 +79,7 @@
                 </div>
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div
-                    class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <i class="fa fa-plus-circle"></i>
                     <h1 class="h2">Add Product</h1>
                 </div>
@@ -122,7 +120,7 @@
                         </svg>
                     </button>
                     <button type="button" id="inputbtn" class="btn btn-primary btn-lg btn-block"
-                        onclick="sendJson()">Add</button>
+                        onclick="postScrapeUrl()">Add</button>
                 </div>
 
                 <div id="product-detail"></div>
@@ -135,45 +133,43 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.5/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
-        function sendJson() {
+        function postScrapeUrl() {
             Spinner(true);
-            var url = document.querySelector('#urlInput');
+            var scrapeUrl = document.querySelector('#urlInput');
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://127.0.0.1:3000/api/products', true);
             xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onerror = function () {
+                warningNotify('Error: Cant connect to server!');
+                Spinner(false);
+            }
             xhr.onload = function () {
                 Spinner(false);
                 var jsonResponse = JSON.parse(this.responseText);
                 if (this.status == 200) {
-                    successNotify(jsonResponse.message + "\n");
+                    successNotify(jsonResponse.message);
                     responseToCard(jsonResponse.productData);
                 } else {
                     warningNotify(jsonResponse.message);
                 }
             };
-            xhr.send('url=' + url.value);
+            xhr.send('url=' + scrapeUrl.value);
         }
 
         function responseToCard(data) {
-            document.getElementById('product-detail').innerHTML = '<div class="card mb-3">' +
-                '<img src = "' + data.product_image + '" class="card-img-top"  width="%20" height="%20">' +
-                '<div class="card-body">' +
-                '<h5 class="card-title">' + data.product_name + '</h5>' +
-                '<p class="card-text">' + data.product_price + '</p>' +
-                ' </div > ' +
-                '</div > ';
+            document.getElementById('product-detail').innerHTML = '<div class="card mb-3" style="max-width: 540px;">' +
+                '<div class="row no-gutters">' +
+                '<div class="col-md-4">' +
+                '<img src="' + data.product_image + '" class="card-img" ></div>' +
+                '<div class="col-md-8"><div class="card-body">' +
+                '<h5 class="card-title">' + data.product_name + '</h5><p class="card-text">' + data.product_price + '</p>' +
+                '</div></div ></div></div> ';
         }
-
-
     </script>
 
     <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
         crossorigin="anonymous"></script>
 
 </body>

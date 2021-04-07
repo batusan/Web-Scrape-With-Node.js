@@ -7,9 +7,6 @@
     <meta name="description" content="">
     <title>Web Scrape</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
-
 
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -34,6 +31,19 @@
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
+        }
+
+        .round-image {
+            width: 60px;
+            height: 60px;
+            -webkit-border-radius: 60px;
+            -webkit-background-clip: padding-box;
+            -moz-border-radius: 60px;
+            -moz-background-clip: padding;
+            border-radius: 60px;
+            background-clip: padding-box;
+            margin: 7px 0 0 5px;
+            float: left;
         }
     </style>
 
@@ -83,8 +93,7 @@
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div
-                    class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <i class="fa fa-list-alt"></i>
                     <h1 class="h2">Product List</h1>
                 </div>
@@ -122,11 +131,15 @@
             xhr.open('GET', 'http://127.0.0.1:3000/api/products', true);
             xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onerror = function () {
+                warningNotify('Error: Cant connect to server!');
+                Spinner(false);
+            }
             xhr.onload = function () {
                 var jsonResponse = JSON.parse(this.responseText);
                 if (this.status == 200) {
                     successNotify("Products Loaded");
-                    append_json(jsonResponse);
+                    listProducts(jsonResponse);
                 } else {
                     warningNotify("Error accoured");
                 }
@@ -134,7 +147,7 @@
             xhr.send();
         }
 
-        function append_json(data) {
+        function listProducts(data) {
             var table = document.getElementById('product-list');
             data.forEach(function (object) {
                 var tr = document.createElement('tr');
@@ -143,7 +156,7 @@
                     '<button class="btn btn-primary" type="button" style = "background-color:#0d6efd"><i class="fa fa-info"></i></button>' +
                     '<td class="hidden-xs">' + object.product_id + '</td>' +
                     '<td>' + object.product_name + '</td>' +
-                    '<td> <img src="' + object.product_image + '" style = "position: relative;width: 200px;height: 200px;overflow: hidden;border - radius: 50 %; " /></td>' +
+                    '<td> <img src="' + object.product_image + '" class="round-image" /></td>' +
                     '<td>' + object.product_price + '</td>'
                 table.appendChild(tr);
             });
@@ -156,9 +169,7 @@
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-        crossorigin="anonymous"></script>
+
     <script src="js/dashboard.js"></script>
 </body>
 

@@ -26,8 +26,8 @@ exports.getProductById = function (req, res) {
                 });
             }
         } else res.status(200).send({
-            message:"Product added.",
-            productData : data
+            message: `ID : ${req.params.product_id} Product found.`,
+            productData: data
         });
     });
 };
@@ -44,26 +44,26 @@ exports.addProduct = function (req, res) {
     var urlAdress = req.body.url;
 
     Scrape.scrapeData(urlAdress, (err, data) => {
-        if(err){
+        if (err) {
             res.status(500).send({
-                message: 'Error scraping Product with link '+ urlAdress
+                message: 'Error scraping Product with link ' + urlAdress
             })
-        }else{
+        } else {
             const product = new Product({
                 name: data.name,
                 image: data.image,
                 price: data.price
             });
-        
+
             Product.add(product, (err, data) => {
                 if (err)
                     res.status(500).send({
                         message:
-                            err.message || "Some error occurred while creating the Product."
+                            err.message || "Some error occurred while adding the Product."
                     });
                 else res.send({
-                    message:"Product added.",
-                    productData : data
+                    message: "Product added.",
+                    productData: data
                 });
             });
         }
