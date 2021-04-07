@@ -9,7 +9,6 @@
     --close-light: #a6accd;
     --close-background: #eff2fb;
     width: 100%;
-    max-width: 240px;
     display: flex;
     align-items: center;
     position: relative;
@@ -36,6 +35,8 @@
     --clear-long-array: 8.5px;
     --clear-long-offset: 24px;
 }
+
+
 .url-input.clearing, .url-input:focus-within {
     --border-width: 1.5px;
     --border: var(--border-active);

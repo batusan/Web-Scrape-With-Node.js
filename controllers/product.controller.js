@@ -25,12 +25,14 @@ exports.getProductById = function (req, res) {
                     message: "Error retrieving Product with id " + req.params.product_id
                 });
             }
-        } else res.send(data);
+        } else res.status(200).send({
+            message:"Product added.",
+            productData : data
+        });
     });
 };
 
 exports.addProduct = function (req, res) {
-
 
 
     if (!req.body) {
@@ -40,7 +42,7 @@ exports.addProduct = function (req, res) {
     }
 
     var urlAdress = req.body.url;
-    //console.log(urlAdress);
+
     Scrape.scrapeData(urlAdress, (err, data) => {
         if(err){
             res.status(500).send({
@@ -59,7 +61,10 @@ exports.addProduct = function (req, res) {
                         message:
                             err.message || "Some error occurred while creating the Product."
                     });
-                else res.send(data);
+                else res.send({
+                    message:"Product added.",
+                    productData : data
+                });
             });
         }
     });

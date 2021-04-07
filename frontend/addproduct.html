@@ -7,16 +7,13 @@
     <meta name="description" content="">
     <title>Web Scrape</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
-
-
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <meta name="theme-color" content="#7952b3">
 
 
@@ -37,6 +34,7 @@
     </style>
 
     <!-- Custom styles for this template -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/input.css" rel="stylesheet">
 </head>
@@ -52,26 +50,27 @@
         </button>
     </header>
 
+
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.html">
-                                <span data-feather="home"></span>
+                            <a class="nav-link" href="index.html">
+                                <i class="fa fa-list-alt"></i>
                                 Product List
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="addproduct.html">
-                                <span data-feather="file"></span>
+                            <a class="nav-link active" href="addproduct.html">
+                                <i class="fa fa-plus-circle"></i>
                                 Add Product
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="detail.html">
-                                <span data-feather="shopping-cart"></span>
+                                <i class="fa fa-info-circle"></i>
                                 Product Detail
                             </a>
                         </li>
@@ -80,14 +79,26 @@
 
                 </div>
             </nav>
-            <script src="js/dashboard.js"></script>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Product List</h1>
-
+                    class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <i class="fa fa-plus-circle"></i>
+                    <h1 class="h2">Add Product</h1>
                 </div>
 
+
+
+                <div class="alert alert-primary" role="alert">
+                    <h4 class="alert-heading">How to add product ?</h4>
+                    <p>You can add the product you find from the site named <a href="http://etsy.com/">Etsy</a> by
+                        copying the web address..</p>
+                    <hr>
+                    <p class="mb-1">But be careful, make sure you copy the entire address.
+                    </p>
+                    <p class="mb-0">Example :
+                        https://www.etsy.com/uk/listing/772695061/brass-or-silver-leaf-bookmark-set
+                    </p>
+                </div>
 
                 <div class="url-input">
                     <div class="icon">
@@ -100,7 +111,7 @@
                         <div class="favicon"></div>
                     </div>
                     <div class="text">
-                        <input type="text" placeholder="Your URL" />
+                        <input type="text" id="urlInput" placeholder="Your Etsy URL" />
                     </div>
                     <button class="clear">
                         <svg viewBox="0 0 24 24">
@@ -110,13 +121,52 @@
                             <path class="arrow" d="M17 11H13" />
                         </svg>
                     </button>
+                    <button type="button" id="inputbtn" class="btn btn-primary btn-lg btn-block"
+                        onclick="sendJson()">Add</button>
                 </div>
 
+                <div id="product-detail"></div>
 
             </main>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.5/bootstrap-notify.min.js"></script>
+    <script type="text/javascript">
+        function sendJson() {
+            Spinner(true);
+            var url = document.querySelector('#urlInput');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://127.0.0.1:3000/api/products', true);
+            xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                Spinner(false);
+                var jsonResponse = JSON.parse(this.responseText);
+                if (this.status == 200) {
+                    successNotify(jsonResponse.message + "\n");
+                    responseToCard(jsonResponse.productData);
+                } else {
+                    warningNotify(jsonResponse.message);
+                }
+            };
+            xhr.send('url=' + url.value);
+        }
 
+        function responseToCard(data) {
+            document.getElementById('product-detail').innerHTML = '<div class="card mb-3">' +
+                '<img src = "' + data.product_image + '" class="card-img-top"  width="%20" height="%20">' +
+                '<div class="card-body">' +
+                '<h5 class="card-title">' + data.product_name + '</h5>' +
+                '<p class="card-text">' + data.product_price + '</p>' +
+                ' </div > ' +
+                '</div > ';
+        }
+
+
+    </script>
 
     <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
