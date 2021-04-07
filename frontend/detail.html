@@ -114,7 +114,7 @@
                         </svg>
                     </button>
                     <button type="button" id="inputbtn" class="btn btn-primary btn-lg btn-block"
-                        onclick="findProductWithId()">Add</button>
+                        onclick="findProductWithId()">Find</button>
                 </div>
                 <div id="product-detail"></div>
             </main>
@@ -130,8 +130,8 @@
             Spinner(true);
             var id = document.querySelector('#urlInput');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://127.0.0.1:3000/api/products/' + id.value, true);
-            xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+            xhr.open('GET', 'http://127.0.0.1:49160/api/products/' + id.value, true);
+            xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:49160');
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onerror = function () {
                 warningNotify('Error: Cant connect to server!');

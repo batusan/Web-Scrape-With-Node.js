@@ -137,8 +137,8 @@
             Spinner(true);
             var scrapeUrl = document.querySelector('#urlInput');
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://127.0.0.1:3000/api/products', true);
-            xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+            xhr.open('POST', 'http://127.0.0.1:49160/api/products', true);
+            xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:49160');
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onerror = function () {
                 warningNotify('Error: Cant connect to server!');
