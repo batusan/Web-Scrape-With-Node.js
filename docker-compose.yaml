@@ -3,11 +3,14 @@ version: '3.7'
 services:
     mysql1:
         image: mysql/mysql-server:latest
-        hostname: mysql
+        hostname: mysql      
+        command: --default-authentication-plugin=mysql_native_password
         environment:
+            MYSQL_ROOT_USER: root
             MYSQL_ROOT_PASSWORD: password
+            MYSQL_ROOT_HOST : '%'                             
         ports:
-            - "127.0.0.1:3306:3306"
+            - "3306:3306"
         volumes:
             -   type: bind
                 source: ./docker_db
@@ -24,13 +27,16 @@ services:
         depends_on:
             - mysql1
         ports:
-            - "127.0.0.1:49160:8080"
+            - "49160:8080"
         expose:
             - "8080"
         links:
             - mysql1
         environment:
                 WAIT_HOSTS: mysql1:3306
+                WAIT_HOSTS_TIMEOUT : 300
+                WAIT_SLEEP_INTERVAL : 30
+                WAIT_HOST_CONNECT_TIMEOUT : 30
         networks:
             - app-network
 
