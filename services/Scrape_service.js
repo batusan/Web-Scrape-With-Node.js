@@ -2,7 +2,6 @@ const rp = require('request-promise');
 const $ = require('cheerio');
 
 exports.scrapeData = (url, result) => {
-
     rp(url)
         .then(function (html) {
             //Data scrape part

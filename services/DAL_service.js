@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 var connection = initializeConnection({
-    host: "mysql",
+    host: "mysql", // We should use "mysql" for docker network bridge , If You don't want to use docker , use "localhost" or ip adress
     user: "root",
     password: "password",
     database: "etsy"
