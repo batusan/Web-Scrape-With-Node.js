@@ -1,6 +1,6 @@
 # Web Scrape With Node.js!
 
-Simply scraping data from the [Etsy](https://www.etsy.com/)
+Simply data scraping API from the [Etsy](https://www.etsy.com/)
 
 # Requirements
 All packages are included in package.json
