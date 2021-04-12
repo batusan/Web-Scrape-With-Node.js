@@ -34,6 +34,6 @@ You can visit [router](https://github.com/batusan/Web-Scrape-With-Node.js/blob/m
 > We cannot use docker-compose up to start both service due to mysql late init problems.
 
     docker-compose up --detach --build mysql1
-    #After the init process over 
+    #After the init process over (Wait a lil bit almost 10 15 sec)
     docker-compose up --detach --build myapp
     # App gonna start on http://localhost:49160 with example products
